@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head th:replace="fragments_Shop::header"/>
+
+<body>
+<!-- Topbar Start -->
+<div th:replace="fragments_Shop::topbar"/>
+<!-- Topbar End -->
+
+
+<!-- Navbar Start -->
+<div class="container-fluid mb-5">
+    <div class="row border-top px-xl-5">
+        <div class="col-lg-3 d-none d-lg-block">
+            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
+              <h6 class="m-0">Categories</h6>
+              <i class="fa fa-angle-down text-dark"></i>
+            </a>
+            <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical">
+              <div th:replace="fragments_Shop::display_Category"/>
+            </nav>
+        </div>
+          <div class="col-lg-9">
+            <div th:replace="fragments_Shop::Taskbar"/>
+          </div>
+    </div>
+</div>
+<!-- Navbar End -->
+<div th:if="${failed}" style="text-align: center; ">
+    <h3 th:text="${failed}" style="color: crimson"/>
+</div>
+    <div class ="my_css" th:if="${size > 0}">
+        <form th:action="@{/filterDate}" method="post" style="text-align: center">
+            <span>From</span>
+            <input type="date" name="Date_from">
+            <span>To</span>
+            <input type="date" name="Date_to">
+            <button style="border: none; background-color: #D19C97" type="submit" name="search">Search </button>
+        </form>
+
+        <table class="table table-bordered" style="margin-top: 20px">
+            <thead>
+                <tr>
+                    <th scope="col">Order ID</th>
+                    <th scope="col">Order Date</th>
+                    <th scope="col">Ship Date</th>
+                    <th scope="col">Order's Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${MyOrder}">
+                    <th scope="row" th:text="${order.order_Id}"></th>
+                    <td th:text="${order.ordDate}"></td>
+                    <td th:text="${order.shipDate}"></td>
+                    <td>
+                        <form th:action = "@{/updateStatusOrder}" method="post">
+                            <input type="hidden" name ="id" th:value="${order.order_Id}"/>
+                            <a th:if = "${order.order_Status} == 1" class="btn btn-warning">Completed Order</a>
+                            <div th:if = "${order.order_Status} == 2">
+                                <button class = "btn btn-primary" name = "cancel_order">Cancel Order</button>
+                                <p >Processed Order</p>
+                            </div>
+                            <div th:if = "${order.order_Status} == 3">
+                                <button class = "btn btn-primary" name = "process_order"> Process Order</button>
+                                <p >Cancelled Order</p>
+                            </div>
+                        </form>
+
+                    </td>
+                    <td>
+                        <a th:href="@{'/viewOrderDetail/' + ${order.order_Id}}" class="btn btn-primary">Detail</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<!-- Products End -->
+
+
+<!-- Vendor Start -->
+<!-- Vendor End -->
+
+
+<!-- Footer Start -->
+<div th:replace="fragments_Shop::footer"/>
+<!-- Footer End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<div th:replace="fragments_Shop::script"/>
+</body>
+
+</html>

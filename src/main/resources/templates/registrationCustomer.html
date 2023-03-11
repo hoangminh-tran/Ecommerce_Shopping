@@ -1,0 +1,79 @@
+<!DOCTYPE html >
+<!-- Designined by CodingLab - youtube.com/codinglabyt -->
+<html lang="en" dir="ltr" xmlns:th="https://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <title> Responsive Registration Form | CodingLab </title>
+    <link th:href="@{/customersRegister/style.css}" rel="stylesheet">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--      <link th:href="@{/admin/css/sb-admin-2.min.css}" rel="stylesheet">-->
+   </head>
+<body>
+  <div class="container">
+      <div class="title">Registration</div>
+      <div class="content">
+          <form th:action="@{/register_customer}" method="post" th:object="${customerDTO}">
+              <div class="user-details">
+                    <div class="input-box">
+                          <span class="details">First Name</span>
+                          <input type="text" placeholder="Enter your first name" th:field="*{firstName}" required>
+                          <div style="text-align: center; color: red;" th:if="${#fields.hasErrors('firstName')}"
+                         th:errors = "*{firstName}"/>
+
+                    </div>
+                    <div class="input-box">
+                          <span class="details">Last Name</span>
+                          <input type="text" placeholder="Enter your last name" th:field="*{lastName}" required>
+                          <div style="text-align: center; color: red;" th:if="${#fields.hasErrors('lastName')}"
+                         th:errors = "*{lastName}"/>
+                    </div>
+                    <div class="input-box">
+                          <span class="details">Email</span>
+                          <input type="text" placeholder="Enter your email" th:field="*{email}" required>
+                          <div style="text-align: center; color: red;"th:if="${#fields.hasErrors('email')}"
+                             th:errors = "*{email}"/>
+                    </div>
+                    <div class="input-box">
+                          <span class="details">Phone Number</span>
+                          <input type="text" placeholder="Enter your number" th:field="*{phone}" required>
+                          <div style="text-align: center; color: red;" th:if="${#fields.hasErrors('phone')}"
+                             th:errors = "*{phone}"/>
+                    </div>
+                    <div class="input-box">
+                          <span class="details">Password</span>
+                          <input type="password" placeholder="Enter your password" th:field="*{password}" required>
+                          <div style="text-align: center; color: red;" th:if="${#fields.hasErrors('password')}"
+                             th:errors = "*{password}"/>
+
+                    </div>
+                    <div class="input-box">
+                          <span class="details">Confirm Password</span>
+                          <input type="password" placeholder="Confirm your password" th:field="*{confirmPassword}" required>
+                          <div style="text-align: center; color: red;"th:if="${#fields.hasErrors('confirmPassword')}"
+                             th:errors = "*{confirmPassword}"/>
+                    </div>
+              </div>
+              <div class="button">
+                    <input type="submit" value="Register">
+              </div>
+          </form>
+          <div th:if="${errorEmail}">
+              <p style="text-align: center; color: red;" th:text="${errorEmail}"/>
+          </div>
+          <div th:if="${errorPassword}">
+              <p style="text-align: center; color: red;" th:text="${errorPassword}"/>
+          </div>
+          <div th:if="${success}">
+              <p style="text-align: center; color: green;" th:text="${success}"/>
+          </div>
+          <div th:if="${errors}">
+              <p style="text-align: center; color: red;" th:text="${errors}"/>
+          </div>
+          <br>
+          <div style="text-align: center;">
+              <a th:href = "@{/LoginCustomer}" style="color: #9b59b6"> Login Page</a>
+          </div>
+      </div>
+  </div>
+</body>
+</html>

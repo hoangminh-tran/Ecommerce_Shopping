@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+
+<head th:replace="fragments :: header"/>
+<base href = "/">
+    <body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div th:replace="fragments::side_bar" />
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <div th:replace="fragments :: topbar"></div>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div>
+                        <form th:action="@{/search_customerEmail}" method="get">
+                            <input type="text" id="search" name="name" placeholder="Search Customer">
+                            <button type="submit" class = "btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                    <!-- Page Heading -->
+                    <div th:if="${size == 0}">
+                        <p>No category</p>
+                    </div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add new Customer</button>
+                    <div th:if = "${success}" class="text-center alert alert-success">
+                        <p th:text="${success}"></p>
+                    </div>
+                    <div th:if = "${failed}" class="text-center alert alert-danger">
+                        <p th:text="${failed}"></p>
+                    </div>
+                    <table class="table table-bordered" th:if="${size > 0}" style="margin-top: 20px;">
+                        <thead>
+                        <tr>
+                            <th scope="col">Customer ID</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Edit Customer</th>
+                            <th scope="col">Action</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="customer : ${listUser}">
+                                <th scope="row" th:text="${customer.user_id}"/>
+                                <td th:text="${customer.firstName}"/>
+                                <td th:text="${customer.lastName}"/>
+                                <td th:text="${customer.email}"/>
+                                <td th:text="${customer.phone}"/>
+                                <td>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" data-whatever="@mdo">Update</button>
+                                </td>
+                                <td>
+                                    <a th:if = "${customer.accountStatus} == true" th:href="@{'/delete_customer/' + ${customer.user_id}}" class="btn btn-warning">Deleted</a>
+                                    <a th:if = "${customer.accountStatus} == false" th:href="@{'/enable_customer/' + ${customer.user_id}}" class="btn btn-primary">Enabled</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+<!--                    <nav aria-label="Page navigation example">-->
+<!--                        <ul class="pagination">-->
+<!--                            <li th:if = "${currentPage != 0}" class="page-item">-->
+<!--                                <a th:href="@{'/ManageCategories/' + ${currentPage - 1}}" class="page-link" href="#">Previous</a>-->
+<!--                            </li>-->
+<!--                            <li th:each = "i : ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage == i - 1 ? 'active' : ''}" class="page-item">-->
+<!--                                <a th:href="@{'/ManageCategories/' + ${i - 1}}" class="page-link" href="#"><span th:text = "${i}"></span></a>-->
+<!--                            </li>-->
+<!--                            <li th:if = "${currentPage + 1 != totalPages}" class="page-item">-->
+<!--                                <a th:href="@{'/ManageCategories/' + ${currentPage + 1}}" class="page-link" href="#">Next</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </nav>-->
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <div th:replace="fragments::footer"/>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <div th:replace="fragments :: scroll">
+    </div>
+
+    <!-- Logout Modal-->
+
+    <!--Add Modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <form th:action="@{/add_customer}" method="post" th:object="${customerNew}">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New Customer</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label  class="col-form-label">First Name:</label>
+                            <input type="text" class="form-control" th:field = "*{firstName}">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Last Name:</label>
+                            <input type="text" class="form-control" th:field = "*{lastName}">
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-form-label">Password:</label>
+                            <input type="password" class="form-control" th:field = "*{password}" >
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Confirm Password:</label>
+                            <input type="password" class="form-control" th:field = "*{confirmPassword}">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Email:</label>
+                            <input type="text" class="form-control" th:field = "*{email}">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Phone:</label>
+                            <input type="text" class="form-control" th:field = "*{phone}">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--end-->
+    <!---->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalExample" aria-hidden="true">
+        <form th:action="@{/update_customer}" method="post">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Category</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="idEdit" class="col-form-label">Id:</label>
+                            <input type="text" class="form-control"  id="idEdit" name="user_id">
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-form-label">FirstName:</label>
+                            <input type="text" class="form-control"  id="nameEdit" name="firstname">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">LastName:</label>
+                            <input type="text" class="form-control" name="lastname">
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-form-label">Password:</label>
+                            <input type="password" class="form-control"  name="password">
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-form-label">Phone:</label>
+                            <input type="text" class="form-control" name="phone">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <div th:replace="fragments::scroll"/>
+
+    <!-- Logout Modal-->
+    <div th:replace="fragments::logoutModal"/>
+    <div th:replace="fragments :: script"></div>
+    <script th:src="@{/admin/js/categories.js}"></script>
+    <script th:src="@{/admin/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/admin/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script th:src="@{/admin/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script th:src="@{/admin/js/sb-admin-2.min.js}"></script>
+    </body>
+
+</html>

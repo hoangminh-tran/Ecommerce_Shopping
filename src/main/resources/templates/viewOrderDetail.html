@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head th:replace="fragments_Shop::header"/>
+
+<body>
+<!-- Topbar Start -->
+<div th:replace="fragments_Shop::topbar"/>
+<!-- Topbar End -->
+
+
+<!-- Navbar Start -->
+<div class="container-fluid mb-5">
+  <div class="row border-top px-xl-5">
+    <div class="col-lg-3 d-none d-lg-block">
+      <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
+        <h6 class="m-0">Categories</h6>
+        <i class="fa fa-angle-down text-dark"></i>
+      </a>
+      <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical">
+        <div th:replace="fragments_Shop::display_Category"/>
+      </nav>
+    </div>
+    <div class="col-lg-9">
+      <div th:replace="fragments_Shop::Taskbar"/>
+    </div>
+  </div>
+</div>
+<!-- Navbar End -->
+<div th:if="${failed}" style="text-align: center;   ">
+  <h3 th:text="${failed}" style="color: crimson"/>
+</div>
+  <div class ="my_css">
+      <table class="table table-bordered" th:if="${size > 0}">
+          <thead>
+            <tr>
+              <th scope="col">Order ID</th>
+              <th scope="col">Product Id</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Image</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr th:each="od : ${OrderDetail}">
+                  <th scope="row" th:text="${od.order_id}"/>
+                  <th scope="row" th:text="${od.product_id}"/>
+                  <td th:text="${od.product_name}"></td>
+                  <td><img class="img-fluid w-25" th:src = "@{'/image/' + ${od.product_id}}" alt=""></td>
+                  <td th:text="${od.price}"></td>
+                  <td th:text="${od.quantity}"></td>
+              </tr>
+          </tbody>
+      </table>
+      <div th:if="${Total}" style="text-align: center; margin-top: 10px; font-size: 20px; font-weight: bolder;">
+          <p th:text="'Total: ' + ${Total}"/>
+      </div>
+  </div>
+<!-- Products End -->
+
+
+<!-- Vendor Start -->
+<!-- Vendor End -->
+
+
+<!-- Footer Start -->
+<div th:replace="fragments_Shop::footer"/>
+<!-- Footer End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<div th:replace="fragments_Shop::script"/>
+</body>
+
+</html>
