@@ -36,7 +36,7 @@ public class CategoryController {
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("size", page.getSize());
         model.addAttribute("currentPage", pageNo);
-        model.addAttribute("title", "Manage Category");
+        model.addAttribute("title", "Search Category");
         model.addAttribute("listCategories", page);
         return "search_category";
     }
@@ -45,9 +45,12 @@ public class CategoryController {
     public String page(@PathVariable("pageNo") int pageNo, Model model)
     {
         Page<Category> page = categoryService.pageCategory(pageNo);
+        List<Category> list = categoryService.findAll();
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("size", page.getSize());
         model.addAttribute("currentPage", pageNo);
+        model.addAttribute("title", "Manage Category");
+        model.addAttribute("categoryNew", new Category());
         model.addAttribute("title", "Manage Category");
         model.addAttribute("listCategories", page);
         return "ManageCategories";
@@ -73,7 +76,7 @@ public class CategoryController {
             attributes.addFlashAttribute("errors", "The server is error");
             e.printStackTrace();
         }
-        return "redirect:/ManageCategories";
+        return "redirect:/ManageCategories/0";
     }
 
     @PostMapping("/update_category")
@@ -96,7 +99,7 @@ public class CategoryController {
             e.printStackTrace();
             attributes.addFlashAttribute("failed", "Error server");
         }
-        return "redirect:/ManageCategories";
+        return "redirect:/ManageCategories/0";
     }
 
     @GetMapping(value = "/delete_category/{id}")

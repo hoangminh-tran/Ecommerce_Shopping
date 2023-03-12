@@ -85,14 +85,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Page<Category> pageCategory(int pageNo) {
-        Pageable pageable = PageRequest.of(pageNo, 5);
+        Pageable pageable = PageRequest.of(pageNo, 6);
         Page<Category> categoryPage = categoryRepository.findCategoryPage(pageable);
         return categoryPage;
     }
 
     @Override
     public Page<Category> searchCategory(int pageNo, String name) {
-        Pageable pageable = PageRequest.of(pageNo, 5);
+        Pageable pageable = PageRequest.of(pageNo, 6);
         Page<Category> categoryPage = categoryRepository.findCategoryPageByName(name, pageable);
         return categoryPage;
     }

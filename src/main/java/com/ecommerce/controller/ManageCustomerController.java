@@ -1,12 +1,15 @@
 package com.ecommerce.controller;
 
 import com.ecommerce.dto.OrderDTO;
+import com.ecommerce.model.Product;
 import com.ecommerce.model.User;
 import com.ecommerce.repository.RoleRepository;
 import com.ecommerce.repository.UserRepository;
+import com.ecommerce.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,9 +25,12 @@ public class ManageCustomerController {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    UserService userService;
+
     @GetMapping("/ManageCustomer")
-    public String ManageCustomer(Model model)
-    {
+    public String ManageCustomer(Model model) {
         List<User> list = userRepository.findAll();
         model.addAttribute("size", list.size());
         model.addAttribute("listUser", list);
@@ -33,15 +39,32 @@ public class ManageCustomerController {
         return "ManageCustomer";
     }
 
-    @GetMapping("/search_customerEmail")
-    public String search_customerEmail(@RequestParam(name = "name", required = false) String name,
-                                    Model model)
+    @GetMapping("/ManageCustomer/{pageNo}")
+    public String customerPage(@PathVariable("pageNo") int pageNo, Model model)
     {
-        List<User> list = userRepository.findAllUserByEmailLike(name);
-        model.addAttribute("size", list != null ? 1 : 0);
-        model.addAttribute("listUser", list);
+        Page<User>pages = userService.ListAllPageUser(pageNo);
+        model.addAttribute("size", pages.getSize());
+        model.addAttribute("totalPages", pages.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("listUser", pages);
+        List<User> list = userRepository.findAll();
         model.addAttribute("title", "Manage Customer");
+        model.addAttribute("customerNew", new User());
         return "ManageCustomer";
+    }
+
+    @GetMapping("/search_customerEmail/{pageNo}")
+    public String search_customerEmail(@RequestParam(name = "name", required = false) String name,
+                                       @PathVariable("pageNo") int pageNo,
+                                       Model model)
+    {
+        Page<User>pages = userService.searchPageUserByEmail(name, pageNo);
+        model.addAttribute("size", pages.getSize());
+        model.addAttribute("totalPages", pages.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("listUser", pages);
+        model.addAttribute("title", "Search Customer");
+        return "search_customerEmail";
     }
 
     @PostMapping("/add_customer")
@@ -55,12 +78,12 @@ public class ManageCustomerController {
             if(user != null)
             {
                 attributes.addFlashAttribute("failed", "Failed to add because duplicated Email !");
-                return "redirect:/ManageCustomer";
+                return "redirect:/ManageCustomer/0";
             }
             if(!customerNew.getConfirmPassword().equals(customerNew.getPassword()))
             {
                 attributes.addFlashAttribute("failed", "The password is not the same!!");
-                return "redirect:/ManageCustomer";
+                return "redirect:/ManageCustomer/0";
             }
             userRepository.save(new User(customerNew.getFirstName(), customerNew.getLastName(), customerNew.getPassword(),
                     customerNew.getConfirmPassword(), customerNew.getEmail(), customerNew.getPhone(), roleRepository.findRoleByRole_Name("CUSTOMER")));
@@ -71,7 +94,7 @@ public class ManageCustomerController {
             e.printStackTrace();
             attributes.addFlashAttribute("errors", "The server has been errored. Please enter again");
         }
-        return "redirect:/ManageCustomer";
+        return "redirect:/ManageCustomer/0";
     }
 
     @PostMapping("/update_customer")
@@ -99,7 +122,7 @@ public class ManageCustomerController {
             e.printStackTrace();
             attributes.addFlashAttribute("errors", "The server has been errored. Please enter again");
         }
-        return "redirect:/ManageCustomer";
+        return "redirect:/ManageCustomer/0";
     }
 
     @GetMapping("/delete_customer/{id}")

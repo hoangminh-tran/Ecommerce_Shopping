@@ -37,12 +37,9 @@ public class ProductController {
     public String ManageProduct(Model model)
     {
         List<Product> productList = productService.findAll();
-        List<Category> categoryList = categoryService.findAllActivatedCategory();
         model.addAttribute("title", "Manage Product");
         model.addAttribute("size", productList.size());
         model.addAttribute("products", productList);
-        model.addAttribute("productNew", new ProductDTO());
-        model.addAttribute("categories", categoryList);
         return "ManageProduct";
     }
 
@@ -52,7 +49,7 @@ public class ProductController {
                                  @RequestParam("name") String name)
     {
         Page<Product>products = productService.searchProducts(pageNo, name);
-        model.addAttribute("title", "Manage Product");
+        model.addAttribute("title", "Search Product");
         model.addAttribute("size", products.getSize());
         model.addAttribute("totalPages", products.getTotalPages());
         model.addAttribute("currentPage", pageNo);
@@ -68,8 +65,12 @@ public class ProductController {
         model.addAttribute("totalPages", products.getTotalPages());
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("products", products);
+        List<Category> categoryList = categoryService.findAllActivatedCategory();
+        model.addAttribute("productNew", new ProductDTO());
+        model.addAttribute("categories", categoryList);
         return "ManageProduct";
     }
+
     @GetMapping("/image/{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable("id") Long id) {
         Product image = productRepository.findById(id).orElse(null);
@@ -102,7 +103,7 @@ public class ProductController {
             attributes.addFlashAttribute("error", "Server error!");
             e.printStackTrace();
         }
-        return "redirect:/ManageProduct";
+        return "redirect:/ManageProduct/0";
     }
 
     @PostMapping("/update_product")
@@ -131,7 +132,7 @@ public class ProductController {
             attributes.addFlashAttribute("error", "Server error!");
             e.printStackTrace();
         }
-        return "redirect:/ManageProduct";
+        return "redirect:/ManageProduct/0";
     }
 
     @GetMapping("/delete_product/{id}")

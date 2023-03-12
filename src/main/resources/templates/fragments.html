@@ -61,8 +61,8 @@
       <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Custom Components:</h6>
-          <a class="collapse-item" th:href="@{/ManageCategories}">Manage Categories</a>
-          <a class="collapse-item" th:href="@{/ManageProduct}">Manage Products</a>
+          <a class="collapse-item" th:href="@{/ManageCategories/0}">Manage Categories</a>
+          <a class="collapse-item" th:href="@{/ManageProduct/0}">Manage Products</a>
         </div>
       </div>
     </li>
@@ -79,7 +79,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Custom Utilities:</h6>
           <a class="collapse-item" th:href="@{/ManageOrders}">Manage Orders</a>
-          <a class="collapse-item" th:href="@{/ManageCustomer}">Manage Customer</a>
+          <a class="collapse-item" th:href="@{/ManageCustomer/0}">Manage Customer</a>
         </div>
       </div>
     </li>
@@ -102,13 +102,7 @@
       <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Login Screens:</h6>
-          <a class="collapse-item" href="loginAdmin.html">Login</a>
-          <a class="collapse-item" href="registerAdmin.html">Register</a>
-          <a class="collapse-item" href="forgot-passwordAdmin.html">Forgot Password</a>
-          <div class="collapse-divider"></div>
-          <h6 class="collapse-header">Other Pages:</h6>
-          <a class="collapse-item" href="404.html">404 Page</a>
-          <a class="collapse-item" href="blank.html">Blank Page</a>
+          <a class="collapse-item" th:href="@{/loginAdmin}">Log out</a>
         </div>
       </div>
     </li>

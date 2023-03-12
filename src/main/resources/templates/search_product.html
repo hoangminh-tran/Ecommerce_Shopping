@@ -17,7 +17,7 @@
         <div id="content">
 
           <!-- Topbar -->
-          <nav th:replace="fragments :: topbar"></nav>
+          <div th:replace="fragments :: topbar"/>
           <!-- End of Topbar -->
 
           <!-- Begin Page Content -->
@@ -36,8 +36,8 @@
             <div th:if="${erorr}" class="text-center alert alert-danger">
               <p th:text="${error}"/>
             </div>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add new Product</button>
-            <!--                    <a class="btn btn-primary" th:href = "@{/add_product}">Add new product</a>-->
+<!--            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add new Product</button>-->
+            <a class="btn btn-primary" th:href = "@{/add_product}">Add new product</a>
             <table class="table table-striped" th:if = "${size > 0}">
               <thead>
               <tr>

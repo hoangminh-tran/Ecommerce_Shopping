@@ -84,14 +84,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> pageProducts(int pageNo) {
-        Pageable pageable = PageRequest.of(pageNo, 5);
+        Pageable pageable = PageRequest.of(pageNo, 6);
         Page<Product>listPage = productRepository.findProduct(pageable);
         return listPage;
     }
 
     @Override
     public Page<Product> searchProducts(int pageNo, String name) {
-        Pageable pageable = PageRequest.of(pageNo, 5);
+        Pageable pageable = PageRequest.of(pageNo, 6);
         Page<Product>listPage = productRepository.findProductByName(name, pageable);
         return listPage;
     }
